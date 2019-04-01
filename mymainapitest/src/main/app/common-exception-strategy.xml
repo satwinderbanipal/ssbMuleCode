@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:leanmix-logger="http://www.mulesoft.org/schema/mule/leanmix-logger" xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:amqp="http://www.mulesoft.org/schema/mule/amqp" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+  xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.5.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/amqp http://www.mulesoft.org/schema/mule/amqp/current/mule-amqp.xsd
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd
+http://www.mulesoft.org/schema/mule/leanmix-logger http://www.mulesoft.org/schema/mule/leanmix-logger/current/mule-leanmix-logger.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd">
+
+
+<choice-exception-strategy name="common-exception-strategyChoice_Exception_Strategy">
+    <catch-exception-strategy doc:name="common-catch-exception-strategy">
+        <set-variable variableName="exception" value="#[exception]" doc:name="Set Exception"/>
+        <dw:transform-message doc:name="Set Common Exception Response">
+          <dw:set-payload resource="classpath:myMainAPITest-common-exception.dwl"/>
+        </dw:transform-message>
+        <leanmix-logger:error doc:name="LeanmixLogger Log Common Exception">
+            <leanmix-logger:context-map ref="#[${leanmix.logger.exceptionMessageMap}]"/>
+        </leanmix-logger:error>
+    </catch-exception-strategy>
+</choice-exception-strategy>
+</mule>
